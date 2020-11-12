@@ -66,13 +66,6 @@
         gameState.ball.x += gameState.ball.velocityX;
         gameState.ball.y += gameState.ball.velocityY;
 
-        if(gameState.ball.x < 35 &&
-            gameState.ball.y > gameState.paddle.y &&
-            gameState.ball.y < gameState.paddle.y + 100)
-        {
-            gameState.ball.velocityX = gameState.ball.velocityX * -1;
-        }
-
         if(gameState.ball.x < 0 || gameState.ball.x >= ctx.canvas.width - 25) {
             gameState.ball.velocityX = gameState.ball.velocityX * -1;
         }

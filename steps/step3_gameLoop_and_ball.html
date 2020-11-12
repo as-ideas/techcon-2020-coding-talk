@@ -27,33 +27,49 @@
     ctx.canvas.height = window.innerHeight;
 
     const gameState = {
-        position: {
+        paddle: {
             x: 10,
             y: 10
+        },
+        ball: {
+            x: ctx.canvas.width * 0.5,
+            y: ctx.canvas.height * 0.5,
+            velocityX: Math.random(),
+            velocityY: Math.random()
         }
     }
 
     document.addEventListener('keydown', e => {
         switch(e.keyCode) {
             case KEY_UP:
-                gameState.position.y += -10;
-
-                updateScreen();
-                break;
+            gameState.paddle.y += -10;
+            break;
 
             case KEY_DOWN:
-                gameState.position.y += 10;
-                updateScreen();
-                break;
+            gameState.paddle.y += 10;
+            break;
         }
     });
 
     function updateScreen() {
         ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        ctx.fillRect(gameState.position.x, gameState.position.y, 25, 100);
+        ctx.fillRect(gameState.paddle.x, gameState.paddle.y, 25, 100);
+
+        ctx.fillRect(gameState.ball.x, gameState.ball.y, 25, 25);
     }
 
-    updateScreen();
+    function simulate() {
+        gameState.ball.x += gameState.ball.velocityX;
+        gameState.ball.y += gameState.ball.velocityY;
+    }
+
+    function gameLoop() {
+        simulate();
+        updateScreen();
+        window.requestAnimationFrame( gameLoop );
+    }
+
+    gameLoop();
 
 </script>
 </body>
