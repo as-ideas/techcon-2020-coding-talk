@@ -1,3 +1,12 @@
+<!--
+1. Create GameState for paddle position, use in paddle render
+2. Start implementing Event Listeners for UP and DOWN
+3. Create constants for both Keys, check keycode.info
+4. Mutate gamestate in listeners
+5. Create UpdateScreen function to use in listeners (also on load)
+6. Clear Screen in update function
+-->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -37,7 +46,6 @@
         switch(e.keyCode) {
             case KEY_UP:
                 gameState.position.y += -10;
-
                 updateScreen();
                 break;
 
