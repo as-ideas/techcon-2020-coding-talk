@@ -5,9 +5,10 @@
 4. Introduce Game Loop
 5. Calculate velocity with angle (randomized)
 
+const RADIANT = 180 / Math.PI;
 const initialAngle = Math.random() * 360;
-velocityX: Math.cos(initialAngle / 180 * Math.PI) * ballSpeed,
-velocityY: Math.sin(initialAngle / 180 * Math.PI) * ballSpeed
+velocityX: Math.cos(initialAngle / RADIANT) * ballSpeed,
+velocityY: Math.sin(initialAngle / RADIANT) * ballSpeed
 -->
 
 
