@@ -5,9 +5,9 @@
 4. Introduce Game Loop
 5. Calculate velocity with angle (randomized)
 
-const initialAngle = Math.random() * 2 * Math.PI;
-velocityX: Math.cos(initialAngle) * ballSpeed,
-velocityY: Math.sin(initialAngle) * ballSpeed
+const initialAngle = Math.random() * 360;
+velocityX: Math.cos(initialAngle / 180 * Math.PI) * ballSpeed,
+velocityY: Math.sin(initialAngle / 180 * Math.PI) * ballSpeed
 -->
 
 
