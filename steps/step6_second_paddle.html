@@ -1,0 +1,128 @@
+<!--
+1. add second paddle to gameState
+2. some refactoring paddle -> player1
+2. draw second paddle
+3. add new keys w/a for second player (left user has w/a)
+2. Reverse x velocity on paddle collision in simulate()
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Let's code</title>
+    <style>
+        html, body {
+            width:  100%;
+            height: 100%;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+
+<canvas id="canvas"></canvas>
+
+<script>
+    const KEY_UP_PLAYER1 = 87;
+    const KEY_DOWN_PLAYER1 = 83;
+
+    const KEY_UP_PLAYER2 = 38;
+    const KEY_DOWN_PLAYER2 = 40;
+
+    const RADIANT = 180 / Math.PI;
+
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    ctx.canvas.width = window.innerWidth;
+    ctx.canvas.height = window.innerHeight;
+
+    const initialAngle = Math.random() * 360;
+    const ballSpeed = 5;
+    const paddleSpeed = 20;
+
+    const gameState = {
+        player1: {
+            x: 10,
+            y: 10
+        },
+        player2: {
+            x: ctx.canvas.width-10,
+            y: 10
+        },
+        ball: {
+            x: ctx.canvas.width * 0.5,
+            y: ctx.canvas.height * 0.5,
+            velocityX: Math.cos(initialAngle / RADIANT) * ballSpeed,
+            velocityY: Math.sin(initialAngle / RADIANT) * ballSpeed
+        }
+    }
+
+    document.addEventListener('keydown', e => {
+        switch(e.keyCode) {
+            case KEY_UP_PLAYER1:
+            gameState.player1.y += -paddleSpeed;
+            break;
+
+            case KEY_DOWN_PLAYER1:
+            gameState.player1.y += paddleSpeed;
+            break;
+
+            case KEY_UP_PLAYER2:
+                gameState.player2.y += -paddleSpeed;
+                break;
+
+            case KEY_DOWN_PLAYER2:
+                gameState.player2.y += paddleSpeed;
+                break;
+        }
+    });
+
+    function updateScreen() {
+        ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        ctx.fillRect(gameState.player1.x, gameState.player1.y, 25, 100);
+        ctx.fillRect(gameState.player2.x-25, gameState.player2.y, 25, 100);
+
+        ctx.fillRect(gameState.ball.x, gameState.ball.y, 25, 25);
+    }
+
+    function simulate() {
+        gameState.ball.x += gameState.ball.velocityX;
+        gameState.ball.y += gameState.ball.velocityY;
+
+        if(gameState.ball.x < 35 &&
+            gameState.ball.y > gameState.player1.y &&
+            gameState.ball.y < gameState.player1.y + 100)
+        {
+            gameState.ball.velocityX = gameState.ball.velocityX * -1;
+        }
+
+        if(gameState.ball.x > ctx.canvas.width - 35 - 25 &&
+            gameState.ball.y > gameState.player2.y &&
+            gameState.ball.y < gameState.player2.y + 100)
+        {
+            gameState.ball.velocityX = gameState.ball.velocityX * -1;
+        }
+
+        if(gameState.ball.x < 0 || gameState.ball.x >= ctx.canvas.width - 25) {
+            gameState.ball.velocityX = gameState.ball.velocityX * -1;
+        }
+
+        if(gameState.ball.y < 0 || gameState.ball.y >= ctx.canvas.height - 25) {
+            gameState.ball.velocityY = gameState.ball.velocityY * -1;
+        }
+    }
+
+    function gameLoop() {
+        simulate();
+        updateScreen();
+        window.requestAnimationFrame( gameLoop );
+    }
+
+    gameLoop();
+
+</script>
+</body>
+</html>
